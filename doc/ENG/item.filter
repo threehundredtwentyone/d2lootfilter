@@ -179,7 +179,7 @@ Continue
 
 Show
     Rune Ist
-    SetDescription {Description}{White}2x {Orange}Gul {Blue}0{White}Normal -> {Orange}Gul{Newline}
+    SetDescription {Description}{White}2x {Orange}Ist {Blue}0{White}Normal -> {Orange}Gul{Newline}
 Continue
 
 Show
@@ -224,7 +224,7 @@ Continue
 
 Show
     Rune Hel
-    SetDescription {Description}{White}2x {Orange}Hel {White}0{White}Chipped -> {Orange}Io{Newline}
+    SetDescription {Description}{White}3x {Orange}Hel {White}0{White}Chipped -> {Orange}Io{Newline}
 Continue
 
 Show
@@ -413,7 +413,7 @@ Show
     Rarity < Magic
     Ethereal True
     Runeword False
-    Sockets 4
+    Sockets 5
     SetDescription {Description}{White}Obedience: {Orange}HelKoThulEthFal{Newline}
 Continue
 
