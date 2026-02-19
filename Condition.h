@@ -11,13 +11,13 @@
 enum class ConditionType : uint8_t {
 	NONE, CODE, TYPE, PLAYERCLASS, CLASS, RARITY, ETHEREAL, RUNEWORD, PREFIX, SUFFIX,
 	ITEM_LEVEL, QUALITY, AREA_LEVEL, CHARACTER_LEVEL, DIFFICULTY,
-	RUNE, ID, GOLD, STATS, DEFENSE, ARMOR, WEAPON, PRICE, MODE,
+	RUNE, ID, GOLD, STATS, DEFENSE, ARMOR, WEAPON, PRICE, QUANTITY, MODE,
 	IDENTIFIED, SOCKETS, WIDTH, HEIGHT, RANDOM, OWNED,
 	HASWEIGHT
 };
 
 static const wchar_t* CONDITIONS[] = { L"", L"Code", L"Type", L"PlayerClass", L"Class", L"Rarity", L"Ethereal", L"Runeword", L"Prefix", L"Suffix", L"ItemLevel", L"Quality", L"AreaLevel", L"CharacterLevel",
-	L"Difficulty", L"Rune", L"Id", L"Gold", L"Stats", L"Defense", L"Armor", L"Weapon", L"Price", L"Mode", L"Identified", L"Sockets", L"Width", L"Height", L"Random", L"Owned", L"HasWeight" };
+	L"Difficulty", L"Rune", L"Id", L"Gold", L"Stats", L"Defense", L"Armor", L"Weapon", L"Price", L"Quantity",L"Mode", L"Identified", L"Sockets", L"Width", L"Height", L"Random", L"Owned", L"HasWeight" };
 
 class Condition {
 protected:
@@ -317,6 +317,19 @@ public:
 	static std::unique_ptr<Condition> MakeInstance(std::wstring_view value = {}) { return std::make_unique<PriceCondition>(value); }
 };
 
+class QuantityCondition : public Condition {
+protected:
+	Variable m_Left;
+	std::unique_ptr<Expression> m_Expression;
+public:
+	PriceCondition(std::wstring_view value = {}) : Condition(value, ConditionType::QUANTITY) {};
+	bool Evaluate(Unit* pItem) override;
+	void Initialize(uint32_t nLineNumber, const utility::string_umap<std::wstring, int32_t>& variables) override;
+	std::wstring ToString(Unit* pItem) const override { return std::format(L"{} {}", CONDITIONS[static_cast<uint8_t>(m_Type)], m_Expression->ToString(pItem)); };
+	
+	static std::unique_ptr<Condition> MakeInstance(std::wstring_view value = {}) { return std::make_unique<QuantityCondition>(value); }
+};
+
 class ModeCondition : public Condition {
 protected:
 	Variable m_Left;
@@ -448,6 +461,7 @@ public:
 			{ L"Armor",				ArmorCondition::MakeInstance },
 			{ L"Weapon",			WeaponCondition::MakeInstance },
 			{ L"Price",				PriceCondition::MakeInstance },
+			{ L"Quantity",			QuantityCondition::MakeInstance },
 			{ L"Mode",				ModeCondition::MakeInstance },
 			{ L"Sockets",			SocketsCondition::MakeInstance },
 			{ L"Width",				WidthCondition::MakeInstance },
