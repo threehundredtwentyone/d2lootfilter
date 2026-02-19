@@ -312,6 +312,7 @@ void Configuration::InitializeOther() {
 			case ConditionType::ARMOR:
 			case ConditionType::WEAPON:
 			case ConditionType::PRICE:
+			case ConditionType::QUANTITY:
 			case ConditionType::MODE:
 			case ConditionType::IDENTIFIED:
 			case ConditionType::SOCKETS:
