@@ -110,6 +110,15 @@ static std::wstring GetItemPrice(ActionResult& action, Unit* pItem) {
 	return std::to_wstring(nPrice);
 }
 
+static std::wstring GetItemQuantity(ActionResult& action, Unit* pItem) {
+	int nQuantity = 0;
+	Unit* pPlayer = D2CLIENT_GetPlayerUnit();
+	if (pItem != NULL && pPlayer != NULL) {
+		nQuantity = D2COMMON_ITEMS_GetTransactionCost(pPlayer, pItem, D2CLIENT_GetDifficulty(), D2CLIENT_GetQuestFlags(), 0x201, 1);
+	}
+	return std::to_wstring(nQuantity);
+}
+
 static std::wstring GetItemSockets(ActionResult& action, Unit* pItem) {
 	return std::to_wstring(D2COMMON_STATLIST_GetUnitStatUnsigned(pItem, Stat::ITEM_NUMSOCKETS, 0));
 }
@@ -156,6 +165,7 @@ void SetNameAction::SetResult(ActionResult& action, Unit* pItem) const {
 		{ L"{Name}", &GetItemName },
 		{ L"{Sockets}", &GetItemSockets },
 		{ L"{Price}", &GetItemPrice },
+		{ L"{Quantity}", &GetItemQuantity },
 		{ L"{Item Level}", &GetItemLevel },
 		{ L"{Rune Number}", &GetRuneNumber },
 		{ L"{Potion Number}", &GetPotionNumber },
@@ -175,6 +185,7 @@ void SetDescriptionAction::SetResult(ActionResult& action, Unit* pItem) const {
 		{ L"{Description}", &GetItemDesc },
 		{ L"{Sockets}", &GetItemSockets },
 		{ L"{Price}", &GetItemPrice },
+		{ L"{Quantity}", &GetItemQuantity },
 		{ L"{Item Level}", &GetItemLevel },
 		{ L"{Rune Number}", &GetRuneNumber },
 		{ L"{Newline}", &Newline }
