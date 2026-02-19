@@ -254,6 +254,21 @@ void PriceCondition::Initialize(uint32_t nLineNumber, const utility::string_umap
 	m_Expression->SetVariables(nLineNumber, variables);
 };
 
+bool QuantityCondition::Evaluate(Unit* pItem) {
+	Unit* pPlayer = D2CLIENT_GetPlayerUnit();
+	if (pItem != NULL && pPlayer != NULL) {
+		int nQuantity = D2COMMON_ITEMS_GetTransactionCost(pPlayer, pItem, D2CLIENT_GetDifficulty(), D2CLIENT_GetQuestFlags(), 0x201, 1);
+		m_Left.SetValue(nQuantity);
+		return m_Expression->Evaluate(pItem);
+	}
+	return false;
+}
+
+void QuantityCondition::Initialize(uint32_t nLineNumber, const utility::string_umap<std::wstring, int32_t>& variables) {
+	m_Expression = Parser::Parse(m_Value.c_str(), &m_Left);
+	m_Expression->SetVariables(nLineNumber, variables);
+};
+
 bool ModeCondition::Evaluate(Unit* pItem) {
 	return false;
 }
